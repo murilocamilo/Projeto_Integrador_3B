@@ -18,8 +18,10 @@ void wrapper_bfs_lista(void* arg) {
 
 int main() {
     int total_arestas, max_vertice;
-    // Carrega o CSV
-    Aresta* arestas = carregar_csv("dataset.csv", &total_arestas, &max_vertice);
+    
+    // --- ALTERAÇÃO AQUI: Lendo o dataset grande ---
+    Aresta* arestas = carregar_csv("dataset_grande.csv", &total_arestas, &max_vertice);
+    
     if (!arestas) return 1;
 
     int tamanhos[] = {100, 500, 1000};
@@ -35,7 +37,6 @@ int main() {
         if (N > max_vertice + 1) N = max_vertice + 1; 
         
         int total_sub;
-        // Chama a função da Issue #2 (Certifique-se de que o subset_generator.h está na pasta include!)
         Aresta* sub = gerar_subconjunto(arestas, total_arestas, N, &total_sub);
 
         if (total_sub == 0) continue;
