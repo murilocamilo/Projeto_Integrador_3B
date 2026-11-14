@@ -1,27 +1,26 @@
-# Nome do executável final
 TARGET = programa
-
-# Compilador e flags
 CC = gcc
 CFLAGS = -Wall -Wextra -Iinclude
 
-# Encontra todos os arquivos .c na pasta src
 SRC = main.c $(wildcard src/*.c)
-
-# Gera os arquivos objeto (.o) temporários
 OBJ = $(SRC:.c=.o)
 
-# Regra principal (o que roda quando você digita "make")
 all: $(TARGET)
 
-# Regra para criar o executável
 $(TARGET): $(OBJ)
 	$(CC) $(CFLAGS) -o $(TARGET) $(OBJ)
 
-# Regra para compilar cada arquivo .c em .o
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
-# Regra para limpar os arquivos temporários
+# Limpeza inteligente que funciona no Windows e no Linux
 clean:
-	rm -f $(OBJ) $(TARGET)
+	@echo "Limpando arquivos temporarios..."
+ifeq ($(OS),Windows_NT)
+	@del /Q /S *.o 2>nul || exit 0
+	@del /Q $(TARGET).exe 2>nul || exit 0
+	@del /Q $(TARGET) 2>nul || exit 0
+else
+	@rm -f $(OBJ) $(TARGET)
+endif
+	@echo "Pronto."
